@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestor de Gastos Personales</title>
+    <link rel="stylesheet" href="css/estilos.css" />
+  </head>
+  <body>
+    <header class="cabecera">
+      <h1>Gestor de Gastos</h1>
+      <span id="estado-conexion" class="conexion">comprobando...</span>
+    </header>
+
+    <!--
+      Navegacion entre modulos. Cada persona agrega su seccion y su
+      pantalla. Un solo frontend dividido por pantallas, no dos apps.
+    -->
+    <nav class="nav">
+      <!-- Persona A: Movimientos, Categorias, Reportes -->
+      <!-- Persona B: Metodos de pago, Prestamos -->
+    </nav>
+
+    <main class="contenido">
+      <section class="bienvenida">
+        <h2>Sprint 0 listo</h2>
+        <p>
+          El esqueleto del proyecto esta montado. Si arriba dice
+          <strong>conectado</strong>, el frontend ya habla con el backend.
+        </p>
+        <p>
+          Cada quien construye su modulo a partir de aqui. Las convenciones
+          estan en el skill <code>gestor-gastos</code>.
+        </p>
+      </section>
+
+      <!-- Cada persona monta aqui el contenedor de su pantalla -->
+      <div id="pantalla"></div>
+    </main>
+
+    <!--
+      Orden de carga importa: api.js define api, ui.js define los helpers,
+      app.js los usa. Sin framework ni bundler: scripts planos.
+    -->
+    <script src="js/api.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

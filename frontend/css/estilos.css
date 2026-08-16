@@ -1,0 +1,97 @@
+/* Estilos base del proyecto. Cada persona agrega los suyos para su
+   pantalla; esto es solo el esqueleto y los estados compartidos. */
+
+:root {
+  --color-fondo: #f5f6fa;
+  --color-texto: #2d3436;
+  --color-primario: #2e86de;
+  --color-ok: #27ae60;
+  --color-error: #e74c3c;
+  --radio: 8px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--color-fondo);
+  color: var(--color-texto);
+}
+
+.cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background: var(--color-primario);
+  color: #fff;
+}
+
+.cabecera h1 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+/* Indicador de conexion con el backend */
+.conexion {
+  font-size: 0.85rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+}
+.conexion--ok {
+  background: var(--color-ok);
+}
+.conexion--error {
+  background: var(--color-error);
+}
+
+.nav {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  flex-wrap: wrap;
+}
+
+.contenido {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.bienvenida {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: var(--radio);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Estados compartidos que pinta ui.js */
+.estado {
+  padding: 0.75rem;
+  border-radius: var(--radio);
+  text-align: center;
+}
+.estado--cargando {
+  color: var(--color-primario);
+}
+.estado--error {
+  color: var(--color-error);
+}
+
+/* Toast de exito */
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radio);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+.toast--exito {
+  background: var(--color-ok);
+}

@@ -1,0 +1,92 @@
+# =========================================================
+#  .gitignore ESTRICTO
+#  Objetivo: que NUNCA se suban claves, secretos ni la
+#  documentacion privada (.md). Los .md se comparten por
+#  mensaje, no por el repositorio.
+# =========================================================
+
+# ---------- Secretos y credenciales ----------
+# Todo archivo de entorno queda fuera...
+.env
+.env.*
+*.env
+# ...menos la plantilla, que no contiene claves reales.
+# (Borra la linea de abajo si tampoco quieres subir el ejemplo.)
+!.env.example
+
+# Llaves y certificados de cualquier tipo
+*.pem
+*.key
+*.ppk
+*.p12
+*.pfx
+*.crt
+*.cer
+*.cert
+*.der
+*.keystore
+*.jks
+id_rsa*
+id_ed25519*
+*.asc
+*.gpg
+*.pgp
+
+# Archivos tipicos de secretos
+secrets.*
+secret.*
+credentials.*
+*credentials*.json
+serviceAccount*.json
+*.secret
+*.private
+config.local.*
+*.local
+
+# ---------- Documentacion privada (.md) ----------
+# Se comparte por mensaje, NO por el repo. Incluye README.md,
+# ARQUITECTURA.md, SKILL.md y las referencias del dominio.
+# Para volver a trackear un archivo puntual, agrega debajo una
+# excepcion, por ejemplo:  !README.md
+*.md
+*.markdown
+
+# ---------- Dependencias ----------
+node_modules/
+jspm_packages/
+
+# ---------- Logs y temporales ----------
+*.log
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.cache/
+tmp/
+temp/
+*.tmp
+*.bak
+*.old
+
+# ---------- Cobertura / build ----------
+coverage/
+dist/
+build/
+.nyc_output/
+
+# ---------- Sistema operativo ----------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# ---------- Editores / IDE ----------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-*

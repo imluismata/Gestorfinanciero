@@ -1,0 +1,27 @@
+{
+  "name": "gestor-gastos-backend",
+  "version": "1.0.0",
+  "description": "API REST del Gestor de Gastos Personales (Node + Express + Mongoose)",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "seed": "node src/seeds/categorias.seed.js",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.9.0",
+    "nodemon": "^3.1.4",
+    "prettier": "^3.3.3"
+  }
+}
