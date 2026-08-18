@@ -28,10 +28,10 @@ app.get("/api/salud", (req, res) => {
 // Rutas por entidad. Cada persona descomenta la suya cuando su router
 // exista. Un prefijo por entidad (ver contrato de la API en el skill).
 // -------------------------------------------------------------------
-// app.use("/api/movimientos", require("./routes/movimiento.routes"));
+app.use("/api/movimientos", require("./routes/movimiento.routes"));
 // app.use("/api/categorias", require("./routes/categoria.routes"));
-// app.use("/api/metodos-pago", require("./routes/metodoPago.routes"));
-// app.use("/api/prestamos", require("./routes/prestamo.routes"));
+app.use("/api/metodos-pago", require("./routes/metodoPago.routes"));
+app.use("/api/prestamos", require("./routes/prestamo.routes"));
 
 // Ruta no encontrada: cualquier cosa que no matchee arriba cae aqui.
 app.use((req, res) => {

@@ -43,4 +43,15 @@ const api = {
   // ---- Movimientos y Categorias (Persona A) ----
 
   // ---- Metodos de pago y Prestamos (Persona B) ----
+  listarMetodosPago: (query = "") => pedir(`/metodos-pago${query}`),
+  crearMetodoPago: (datos) => pedir("/metodos-pago", { method: "POST", body: JSON.stringify(datos) }),
+  actualizarMetodoPago: (id, datos) => pedir(`/metodos-pago/${id}`, { method: "PUT", body: JSON.stringify(datos) }),
+  desactivarMetodoPago: (id) => pedir(`/metodos-pago/${id}`, { method: "DELETE" }),
+  estadoMetodoPago: (id) => pedir(`/metodos-pago/${id}/estado`),
+
+  listarPrestamos: () => pedir("/prestamos"),
+  obtenerPrestamo: (id) => pedir(`/prestamos/${id}`),
+  crearPrestamo: (datos) => pedir("/prestamos", { method: "POST", body: JSON.stringify(datos) }),
+  eliminarPrestamo: (id) => pedir(`/prestamos/${id}`, { method: "DELETE" }),
+  pagarCuota: (idPrestamo, numero, datos) => pedir(`/prestamos/${idPrestamo}/cuotas/${numero}/pagar`, { method: "POST", body: JSON.stringify(datos) }),
 };

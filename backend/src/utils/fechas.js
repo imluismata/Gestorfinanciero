@@ -29,7 +29,9 @@ const proximoCorte = (diaCorte, desde = new Date()) => {
 // Si es mayor, cae en el mismo mes (corta el 5, se paga el 20).
 const limitePagoDeCorte = (fechaCorte, diaCorte, diaLimitePago) => {
   const mesDestino =
-    diaLimitePago <= diaCorte ? fechaCorte.getMonth() + 1 : fechaCorte.getMonth();
+    diaLimitePago <= diaCorte
+      ? fechaCorte.getMonth() + 1
+      : fechaCorte.getMonth();
   return diaDelMes(fechaCorte.getFullYear(), mesDestino, diaLimitePago);
 };
 

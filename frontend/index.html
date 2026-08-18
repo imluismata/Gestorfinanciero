@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestor de Gastos Personales</title>
     <link rel="stylesheet" href="css/estilos.css" />
+    <link rel="stylesheet" href="css/persona-b.css" />
   </head>
   <body>
     <header class="cabecera">
       <h1>Gestor de Gastos</h1>
-      <span id="estado-conexion" class="conexion">comprobando...</span>
     </header>
 
     <!--
@@ -19,31 +19,30 @@
     <nav class="nav">
       <!-- Persona A: Movimientos, Categorias, Reportes -->
       <!-- Persona B: Metodos de pago, Prestamos -->
+      <button class="nav-boton nav-boton--activo" data-pantalla="metodos-pago">Métodos de pago</button>
+      <button class="nav-boton" data-pantalla="prestamos">Préstamos</button>
     </nav>
 
     <main class="contenido">
-      <section class="bienvenida">
-        <h2>Sprint 0 listo</h2>
-        <p>
-          El esqueleto del proyecto esta montado. Si arriba dice
-          <strong>conectado</strong>, el frontend ya habla con el backend.
-        </p>
-        <p>
-          Cada quien construye su modulo a partir de aqui. Las convenciones
-          estan en el skill <code>gestor-gastos</code>.
-        </p>
-      </section>
-
-      <!-- Cada persona monta aqui el contenedor de su pantalla -->
-      <div id="pantalla"></div>
+      <!-- Cada persona monta aqui el contenedor de su pantalla. Solo la
+           que coincide con el boton activo del nav queda visible
+           (mostrarPantalla en app.js). -->
+      <div id="pantalla">
+        <section id="pantalla-metodos-pago" class="pantalla" data-pantalla="metodos-pago"></section>
+        <section id="pantalla-prestamos" class="pantalla" data-pantalla="prestamos" hidden></section>
+      </div>
     </main>
 
     <!--
       Orden de carga importa: api.js define api, ui.js define los helpers,
-      app.js los usa. Sin framework ni bundler: scripts planos.
+      los archivos de pantalla definen sus funciones de inicializar*, y
+      app.js -- al final -- las conecta con el DOM. Sin framework ni
+      bundler: scripts planos.
     -->
     <script src="js/api.js"></script>
     <script src="js/ui.js"></script>
+    <script src="js/metodosPago.js"></script>
+    <script src="js/prestamos.js"></script>
     <script src="js/app.js"></script>
   </body>
 </html>
