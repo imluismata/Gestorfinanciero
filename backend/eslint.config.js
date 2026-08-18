@@ -31,4 +31,21 @@ module.exports = [
       eqeqeq: ["warn", "smart"],
     },
   },
+  {
+    // Globals de Jest para los archivos de prueba.
+    files: ["tests/**/*.js", "**/*.test.js"],
+    languageOptions: {
+      globals: {
+        describe: "readonly",
+        test: "readonly",
+        it: "readonly",
+        expect: "readonly",
+        beforeAll: "readonly",
+        afterAll: "readonly",
+        beforeEach: "readonly",
+        afterEach: "readonly",
+        jest: "readonly",
+      },
+    },
+  },
 ];
