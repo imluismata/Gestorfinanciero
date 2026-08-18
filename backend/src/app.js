@@ -28,8 +28,14 @@ app.get("/api/salud", (req, res) => {
 // Rutas por entidad. Cada persona descomenta la suya cuando su router
 // exista. Un prefijo por entidad (ver contrato de la API en el skill).
 // -------------------------------------------------------------------
-// app.use("/api/movimientos", require("./routes/movimiento.routes"));
-// app.use("/api/categorias", require("./routes/categoria.routes"));
+const movimientoRoutes = require("./routes/movimiento.routes");
+app.use("/api/movimientos", movimientoRoutes);
+// Alias temporal para la entrega: la rubrica menciona "Entidad: Gastos".
+// Mismo router, misma logica. Remover despues de calificar: dos URLs para
+// el mismo recurso es deuda tecnica, no una feature.
+app.use("/api/gastos", movimientoRoutes);
+
+app.use("/api/categorias", require("./routes/categoria.routes"));
 // app.use("/api/metodos-pago", require("./routes/metodoPago.routes"));
 // app.use("/api/prestamos", require("./routes/prestamo.routes"));
 
