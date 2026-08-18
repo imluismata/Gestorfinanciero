@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const ErrorNegocio = require("../utils/errorNegocio");
 
 // ---------- Fuente unica de verdad de los tipos ----------
 // Cada entrada declara que exige el tipo y como afecta al patrimonio.
@@ -130,10 +131,10 @@ const movimientoSchema = new mongoose.Schema(
 // de TIPOS_MOVIMIENTO.
 //
 // pre("validate") y no pre("save"): asi los errores salen antes de tocar
-// la base. Se marcan con `esValidacion` para que el controlador los mapee
-// a 400 (dato invalido del cliente) y no a 500 (fallo del servidor).
-const errorTipo = (mensaje) =>
-  Object.assign(new Error(mensaje), { esValidacion: true });
+// la base. Se lanzan como ErrorNegocio (el tipo de error compartido del
+// equipo) para que el controlador los mapee a 400 -dato invalido del
+// cliente- y no a 500 -fallo del servidor-.
+const errorTipo = (mensaje) => new ErrorNegocio(mensaje);
 
 movimientoSchema.pre("validate", function (next) {
   const reglas = TIPOS_MOVIMIENTO[this.tipo];

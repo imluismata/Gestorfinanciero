@@ -1,0 +1,400 @@
+/* Estilos especificos de las pantallas de Persona B: Metodos de pago y
+   Prestamos. Las primitivas compartidas (botones, campos, chips,
+   tarjeta) viven en estilos.css; aqui solo el layout propio de estas
+   dos pantallas. */
+
+/* ---------- Barra de herramientas comun a ambas pantallas ---------- */
+.barra-herramientas {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  flex-wrap: wrap;
+}
+
+.interruptor {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--color-texto-suave);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ---------- Panel de formulario (crear/editar) ---------- */
+.panel-formulario {
+  margin-top: var(--espacio-4);
+  padding: var(--espacio-4) var(--espacio-4) var(--espacio-3);
+}
+.panel-formulario h3 {
+  margin: 0 0 var(--espacio-3);
+  font-family: var(--fuente-titulo);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.panel-formulario form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-3);
+}
+.panel-formulario .acciones-formulario {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--espacio-2);
+  margin-top: var(--espacio-2);
+  padding-top: var(--espacio-3);
+  border-top: 1px solid var(--color-borde);
+}
+
+/* ---------- Metodos de pago: lista de filas ---------- */
+.lista-metodos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-3);
+  margin-top: var(--espacio-4);
+}
+
+.fila-metodo {
+  padding: var(--espacio-3) var(--espacio-4);
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto;
+  align-items: center;
+  gap: var(--espacio-4);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.fila-metodo:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sombra-md);
+  border-color: var(--acento, var(--color-primario));
+}
+.fila-metodo--inactivo {
+  opacity: 0.55;
+}
+
+.fila-metodo__icono {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--acento, var(--color-primario));
+  background: var(--acento-suave, var(--color-cuenta-suave));
+  flex: 0 0 auto;
+}
+.fila-metodo__icono svg {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+.fila-metodo--tarjeta_credito .fila-metodo__icono {
+  --acento: var(--color-tarjeta);
+  --acento-suave: var(--color-tarjeta-suave);
+}
+.fila-metodo--cuenta .fila-metodo__icono {
+  --acento: var(--color-cuenta);
+  --acento-suave: var(--color-cuenta-suave);
+}
+.fila-metodo--efectivo .fila-metodo__icono {
+  --acento: var(--color-efectivo);
+  --acento-suave: var(--color-efectivo-suave);
+}
+
+.fila-metodo__nombre {
+  font-family: var(--fuente-titulo);
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+.fila-metodo__subtitulo {
+  font-size: 0.8rem;
+  color: var(--color-texto-suave);
+  margin-top: 0.1rem;
+}
+
+.chip--tarjeta_credito {
+  color: var(--color-tarjeta);
+  background: var(--color-tarjeta-suave);
+}
+.chip--cuenta {
+  color: var(--color-cuenta);
+  background: var(--color-cuenta-suave);
+}
+.chip--efectivo {
+  color: var(--color-efectivo);
+  background: var(--color-efectivo-suave);
+}
+.chip--inactivo {
+  color: var(--color-texto-suave);
+  background: #eef0f3;
+}
+
+.fila-metodo__estado {
+  text-align: right;
+  line-height: 1.3;
+}
+.fila-metodo__estado-etiqueta {
+  display: block;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-texto-suave);
+}
+.fila-metodo__estado-valor {
+  font-size: 1rem;
+  font-weight: 700;
+}
+.fila-metodo__estado-valor--pendiente {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--color-texto-suave);
+  font-style: italic;
+}
+
+.fila-metodo__acciones {
+  display: flex;
+  gap: var(--espacio-1);
+}
+
+.btn-icono {
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--color-borde);
+  background: var(--color-superficie);
+  color: var(--color-texto-suave);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.btn-icono svg {
+  width: 1rem;
+  height: 1rem;
+}
+.btn-icono:hover {
+  color: var(--color-primario);
+  border-color: var(--color-primario);
+}
+.btn-icono--peligro:hover {
+  color: var(--color-error);
+  border-color: var(--color-error);
+}
+
+@media (max-width: 640px) {
+  .fila-metodo {
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: "icono info acciones" "estado estado estado" ". chip chip";
+    row-gap: var(--espacio-2);
+  }
+  .fila-metodo__icono {
+    grid-area: icono;
+  }
+  .fila-metodo__info {
+    grid-area: info;
+  }
+  .fila-metodo__acciones {
+    grid-area: acciones;
+  }
+  .fila-metodo__estado {
+    grid-area: estado;
+    text-align: left;
+    display: flex;
+    gap: var(--espacio-2);
+    align-items: baseline;
+  }
+  .chip {
+    grid-area: chip;
+    justify-self: start;
+  }
+}
+
+/* Campos que solo aplican a un tipo de metodo de pago; app.js los
+   muestra/oculta segun el select de tipo. */
+.campos-tipo {
+  display: none;
+}
+.campos-tipo--activo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--espacio-3);
+}
+
+/* ---------- Prestamos ---------- */
+.lista-prestamos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--espacio-4);
+  margin-top: var(--espacio-4);
+  align-items: start;
+}
+
+.tarjeta-prestamo {
+  padding: var(--espacio-4);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.tarjeta-prestamo:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sombra-md);
+}
+
+.tarjeta-prestamo__encabezado {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  cursor: pointer;
+}
+.tarjeta-prestamo__icono {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  color: var(--color-prestamo);
+  background: var(--color-prestamo-suave);
+}
+.tarjeta-prestamo__icono svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+.tarjeta-prestamo__titulo {
+  flex: 1;
+}
+.tarjeta-prestamo__nombre {
+  font-family: var(--fuente-titulo);
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+.tarjeta-prestamo__acreedor {
+  font-size: 0.82rem;
+  color: var(--color-texto-suave);
+  margin-top: 0.1rem;
+}
+.chip--prestamo {
+  color: var(--color-prestamo);
+  background: var(--color-prestamo-suave);
+}
+
+.tarjeta-prestamo__saldo-fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: var(--espacio-4);
+}
+.tarjeta-prestamo__saldo-etiqueta {
+  font-size: 0.85rem;
+  color: var(--color-texto-suave);
+}
+.tarjeta-prestamo__saldo-valor {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.barra-progreso {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--color-prestamo-suave);
+  overflow: hidden;
+  margin: var(--espacio-3) 0 var(--espacio-2);
+}
+.barra-progreso__relleno {
+  height: 100%;
+  background: var(--color-prestamo);
+  border-radius: inherit;
+  transition: width 0.3s ease;
+}
+
+.tarjeta-prestamo__resumen {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--color-texto-suave);
+}
+
+.tarjeta-prestamo__proxima {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--espacio-3);
+  padding-top: var(--espacio-3);
+  border-top: 1px solid var(--color-borde);
+}
+.tarjeta-prestamo__proxima-etiqueta {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-texto-suave);
+  margin-bottom: 0.15rem;
+}
+.tarjeta-prestamo__proxima-valor {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.tarjeta-prestamo__proxima--completo {
+  text-align: center;
+  color: var(--color-efectivo);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.tarjeta-prestamo__cuotas {
+  margin-top: var(--espacio-4);
+  padding-top: var(--espacio-3);
+  border-top: 1px solid var(--color-borde);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-2);
+}
+
+.fila-cuota {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  padding: var(--espacio-2) var(--espacio-3);
+  border-radius: calc(var(--radio) - 2px);
+  background: #fafbfc;
+}
+.fila-cuota--pagada {
+  background: var(--color-efectivo-suave);
+}
+.fila-cuota__numero {
+  width: 1.75rem;
+  height: 1.75rem;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-texto-suave);
+}
+.fila-cuota--pagada .fila-cuota__numero {
+  background: var(--color-efectivo);
+  border-color: var(--color-efectivo);
+  color: #fff;
+}
+.fila-cuota__fecha {
+  flex: 1;
+  font-size: 0.85rem;
+}
+.fila-cuota__monto {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.fila-cuota__etiqueta-pagada {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-efectivo);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.panel-pagar-cuota {
+  margin-top: var(--espacio-2);
+  padding: var(--espacio-3);
+  border-radius: calc(var(--radio) - 2px);
+  background: var(--color-prestamo-suave);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-2);
+}

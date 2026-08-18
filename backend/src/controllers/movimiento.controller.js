@@ -1,17 +1,17 @@
 const Movimiento = require("../models/movimiento.model");
 const Categoria = require("../models/categoria.model");
 const { exito, creado, error } = require("../utils/respuesta");
+const ErrorNegocio = require("../utils/errorNegocio");
+const { validarPagoTarjeta } = require("../services/pagoTarjeta.service");
 
 const { TIPOS_GASTO, TIPOS_INGRESO } = Movimiento;
 
-// Error de validacion marcado, para que el catch lo mapee a 400 y no a 500.
-const errorValidacion = (mensaje) =>
-  Object.assign(new Error(mensaje), { esValidacion: true });
-
 // Mapea un error atrapado al codigo HTTP correcto. Un solo lugar para no
-// repetir la escalera de if en cada handler.
+// repetir la escalera de if en cada handler. Toda la logica de negocio
+// (este controlador, el hook del modelo y los services) lanza ErrorNegocio
+// con su status; aqui se traduce a la respuesta.
 const responderError = (res, err) => {
-  if (err.esValidacion) return error(res, err.message, 400);
+  if (err instanceof ErrorNegocio) return error(res, err.message, err.status);
   if (err.name === "ValidationError") return error(res, err.message, 400);
   if (err.name === "CastError") return error(res, "Id no valido", 400);
   console.error(err);
@@ -29,11 +29,11 @@ const resolverCategoria = async ({ categoria, subcategoria, tipo }) => {
   if (subcategoriaId) {
     const sub = await Categoria.findById(subcategoriaId);
     if (!sub || !sub.activo) {
-      throw errorValidacion("La subcategoria no existe o esta desactivada");
+      throw new ErrorNegocio("La subcategoria no existe o esta desactivada");
     }
     // Sin padre es una categoria principal mandada en el campo equivocado.
     if (!sub.padre) {
-      throw errorValidacion(
+      throw new ErrorNegocio(
         "El valor enviado como subcategoria es una categoria principal"
       );
     }
@@ -42,7 +42,7 @@ const resolverCategoria = async ({ categoria, subcategoria, tipo }) => {
   }
 
   if (!categoriaId) {
-    throw errorValidacion("La categoria es obligatoria");
+    throw new ErrorNegocio("La categoria es obligatoria");
   }
 
   // El arbol de la categoria debe corresponder al tipo: un consumo no se
@@ -50,10 +50,10 @@ const resolverCategoria = async ({ categoria, subcategoria, tipo }) => {
   const arbolEsperado = tipo === "ingreso" ? "ingreso" : "gasto";
   const cat = await Categoria.findById(categoriaId);
   if (!cat || !cat.activo) {
-    throw errorValidacion("La categoria no existe o esta desactivada");
+    throw new ErrorNegocio("La categoria no existe o esta desactivada");
   }
   if (cat.aplicaA !== arbolEsperado) {
-    throw errorValidacion("La categoria no corresponde a este tipo de movimiento");
+    throw new ErrorNegocio("La categoria no corresponde a este tipo de movimiento");
   }
 
   return { categoria: categoriaId, subcategoria: subcategoriaId };
@@ -219,10 +219,7 @@ const crearMovimiento = async (req, res) => {
       req.body;
 
     if (tipo !== "consumo" && tipo !== "ingreso") {
-      return error(
-        res,
-        "Este endpoint solo crea consumos e ingresos"
-      );
+      return error(res, "Este endpoint solo crea consumos e ingresos");
     }
 
     // Deriva y valida la categoria contra el arbol correcto.
@@ -316,6 +313,40 @@ const eliminarMovimiento = async (req, res) => {
   }
 };
 
+// POST /api/movimientos/pago-tarjeta   (aporte de Persona B)
+// Abono desde una cuenta (o efectivo) hacia una tarjeta de credito. No
+// reutiliza el POST general: sus campos y validaciones son distintos (ver
+// references/modelo-financiero.md, seccion 8). Las reglas del dominio
+// viven en services/pagoTarjeta.service.js; este handler solo las invoca,
+// crea el Movimiento y responde.
+const registrarPagoTarjeta = async (req, res) => {
+  try {
+    const { origen, destino, monto, fecha, descripcion } = req.body;
+
+    const { cuentaOrigen, tarjetaDestino } = await validarPagoTarjeta({
+      origen,
+      destino,
+      monto,
+    });
+
+    // Una sola insercion: no se actualiza ningun saldo porque ninguno
+    // esta almacenado (los saldos se derivan, nunca se guardan).
+    const pago = await Movimiento.create({
+      tipo: "pago_tarjeta",
+      monto,
+      fecha: fecha || Date.now(),
+      origen: cuentaOrigen._id,
+      destinoModelo: "MetodoPago",
+      destino: tarjetaDestino._id,
+      descripcion,
+    });
+
+    return creado(res, pago);
+  } catch (err) {
+    return responderError(res, err);
+  }
+};
+
 module.exports = {
   obtenerMovimientos,
   obtenerResumen,
@@ -323,4 +354,5 @@ module.exports = {
   crearMovimiento,
   actualizarMovimiento,
   eliminarMovimiento,
+  registrarPagoTarjeta,
 };

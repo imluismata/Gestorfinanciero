@@ -2,12 +2,57 @@
    pantalla; esto es solo el esqueleto y los estados compartidos. */
 
 :root {
-  --color-fondo: #f5f6fa;
-  --color-texto: #2d3436;
-  --color-primario: #2e86de;
+  /* Paleta calcada de la referencia del 2026-08-17 ("Nuevo Estilo"):
+     fondo gris-azulado muy claro, tarjetas blancas, texto casi negro,
+     indigo (#4648d4) solo como acento en enlaces/iconos/estados
+     activos, y un navy oscuro para los botones solidos. Solo valores
+     de variables CSS: nada de Tailwind ni dependencias nuevas. */
+  --color-fondo: #f7f9fb;
+  --color-texto: #191c1e;
+  --color-primario: #4648d4;
+  --color-primario-oscuro: #07006c;
   --color-ok: #27ae60;
   --color-error: #e74c3c;
   --radio: 8px;
+
+  /* ---- Extensión del sistema de diseño (Persona B) ----
+     Tokens de mas alla del esqueleto de Sprint 0: superficie, bordes,
+     espaciado y un color por cada subtipo de instrumento financiero,
+     para que el ojo distinga tarjeta / cuenta / efectivo / prestamo sin
+     leer la etiqueta. Pensado para que Persona A tambien los reuse en
+     sus pantallas en vez de inventar los suyos. */
+  --color-superficie: #ffffff;
+  --color-borde: #c6c6cd;
+  --color-texto-suave: #45464d;
+
+  --color-tarjeta: #b45309;
+  --color-tarjeta-suave: #fef3e2;
+  --color-cuenta: #1d6fbd;
+  --color-cuenta-suave: #e7f1fb;
+  --color-efectivo: #15803d;
+  --color-efectivo-suave: #e8f6ec;
+  --color-prestamo: #6d28d9;
+  --color-prestamo-suave: #f1ebfc;
+
+  --espacio-1: 0.25rem;
+  --espacio-2: 0.5rem;
+  --espacio-3: 0.75rem;
+  --espacio-4: 1rem;
+  --espacio-6: 1.5rem;
+  --espacio-8: 2rem;
+
+  --sombra-sm: 0 1px 2px rgba(17, 24, 39, 0.06);
+  --sombra-md: 0 8px 24px rgba(17, 24, 39, 0.1);
+
+  /* Los montos van en una fuente monoespaciada con tabular-nums: los
+     numeros alinean en columna y no "bailan" al cambiar de cifra. Es lo
+     que distingue a una pantalla de dinero de una pantalla generica. */
+  --fuente-monto: "Cascadia Mono", "SF Mono", ui-monospace, Consolas, monospace;
+
+  /* La referencia usa "Hanken Grotesk" (Google Fonts) para titulos.
+     Sin CDN no podemos pedirla, asi que el mismo stack sans del cuerpo
+     con mas peso hace un papel muy parecido: geometrica, sin serifas. */
+  --fuente-titulo: -apple-system, "Segoe UI", system-ui, Roboto, sans-serif;
 }
 
 * {
@@ -26,27 +71,22 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.5rem;
-  background: var(--color-primario);
-  color: #fff;
+  /* Header blanco (superficie), no del color del fondo: asi el indigo
+     queda reservado para acentos (titulo activo, enlaces, iconos) y no
+     compite con nada. El borde ahora tiene contraste real contra el
+     blanco. */
+  background: var(--color-superficie);
+  border-bottom: 1px solid var(--color-borde);
+  color: var(--color-texto);
 }
 
 .cabecera h1 {
   margin: 0;
-  font-size: 1.25rem;
-}
-
-/* Indicador de conexion con el backend */
-.conexion {
-  font-size: 0.85rem;
-  padding: 0.2rem 0.6rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.2);
-}
-.conexion--ok {
-  background: var(--color-ok);
-}
-.conexion--error {
-  background: var(--color-error);
+  font-family: var(--fuente-titulo);
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-texto);
 }
 
 .nav {
@@ -94,4 +134,232 @@ body {
 }
 .toast--exito {
   background: var(--color-ok);
+}
+
+/* =========================================================
+   Sistema de diseño compartido (agregado por Persona B)
+   Primitivas reutilizables: pestañas de navegacion, botones,
+   campos de formulario, tarjetas, chips. Cualquier pantalla nueva
+   (de cualquiera de los dos) puede apoyarse en esto en vez de crear
+   estilos propios desde cero.
+   ========================================================= */
+
+.nav-boton {
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-texto-suave);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.nav-boton:hover {
+  background: rgba(46, 134, 222, 0.08);
+  color: var(--color-primario);
+}
+.nav-boton--activo,
+.nav-boton--activo:hover {
+  background: var(--color-primario);
+  color: #fff;
+}
+
+.pantalla[hidden] {
+  display: none;
+}
+
+.encabezado-pantalla {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--espacio-4);
+  margin-bottom: var(--espacio-4);
+}
+.encabezado-pantalla h2 {
+  margin: 0 0 0.15rem;
+  font-family: var(--fuente-titulo);
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+.encabezado-pantalla p {
+  margin: 0;
+  color: var(--color-texto-suave);
+  font-size: 0.9rem;
+}
+
+.btn {
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: var(--radio);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.15s ease, background 0.15s ease;
+  white-space: nowrap;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn-primario {
+  /* A proposito distinto de --color-primario (que sigue en el titulo y
+     la pestaña activa): negro puro para los botones, a ver si asi
+     contrasta mejor que forzar el mismo acento en todo. */
+  background: var(--color-texto);
+  color: #fff;
+}
+.btn-primario:hover {
+  background: #000000;
+  box-shadow: var(--sombra-sm);
+}
+.btn-secundario {
+  background: var(--color-superficie);
+  color: var(--color-texto);
+  border-color: var(--color-borde);
+}
+.btn-secundario:hover {
+  border-color: var(--color-texto-suave);
+}
+.btn-peligro {
+  background: transparent;
+  color: var(--color-error);
+  border-color: transparent;
+}
+.btn-peligro:hover {
+  background: rgba(231, 76, 60, 0.08);
+}
+.btn-chico {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+}
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.tarjeta {
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra-sm);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.monto {
+  font-family: var(--fuente-monto);
+  font-variant-numeric: tabular-nums;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+}
+.campo label {
+  font-weight: 600;
+  color: var(--color-texto-suave);
+}
+.campo input,
+.campo select,
+.campo textarea {
+  /* Sin esto el input usa su ancho por defecto (~20 caracteres) en vez
+     de llenar la columna de la grilla, y en una fila de 4 campos se
+     monta encima del siguiente. */
+  width: 100%;
+  font: inherit;
+  font-size: 0.95rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--color-borde);
+  border-radius: calc(var(--radio) - 2px);
+  background: var(--color-superficie);
+  color: var(--color-texto);
+}
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+  outline: 2px solid var(--color-primario);
+  outline-offset: 1px;
+}
+.campo-fila {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--espacio-3);
+}
+/* Los items de una grilla no se achican por debajo del contenido a
+   menos que se lo digas explicitamente: sin esto, un input largo
+   empuja su columna y se monta sobre la de al lado. */
+.campo-fila > .campo {
+  min-width: 0;
+}
+.campo-ayuda {
+  font-size: 0.75rem;
+  color: var(--color-texto-suave);
+  font-weight: 400;
+}
+
+/* Prefijo de moneda fijo dentro del campo (RD$/US$), no un simple
+   placeholder que desaparece al escribir. */
+.campo-monto {
+  position: relative;
+}
+.campo-monto input {
+  padding-left: 2.5rem;
+}
+.campo-monto__prefijo {
+  position: absolute;
+  left: 0.65rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-texto-suave);
+  font-size: 0.85rem;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+/* Sufijo fijo dentro del campo (%), mismo patron que el prefijo de
+   moneda pero pegado a la derecha. */
+.campo-sufijo {
+  position: relative;
+}
+.campo-sufijo input {
+  padding-right: 2rem;
+}
+.campo-sufijo__texto {
+  position: absolute;
+  right: 0.65rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-texto-suave);
+  font-size: 0.85rem;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.vacio {
+  text-align: center;
+  padding: var(--espacio-8) var(--espacio-4);
+  color: var(--color-texto-suave);
+  border: 1px dashed var(--color-borde);
+  border-radius: var(--radio);
+}
+.vacio strong {
+  display: block;
+  color: var(--color-texto);
+  margin-bottom: 0.25rem;
+  font-size: 1rem;
 }

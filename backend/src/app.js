@@ -36,8 +36,8 @@ app.use("/api/movimientos", movimientoRoutes);
 app.use("/api/gastos", movimientoRoutes);
 
 app.use("/api/categorias", require("./routes/categoria.routes"));
-// app.use("/api/metodos-pago", require("./routes/metodoPago.routes"));
-// app.use("/api/prestamos", require("./routes/prestamo.routes"));
+app.use("/api/metodos-pago", require("./routes/metodoPago.routes"));
+app.use("/api/prestamos", require("./routes/prestamo.routes"));
 
 // Ruta no encontrada: cualquier cosa que no matchee arriba cae aqui.
 app.use((req, res) => {
