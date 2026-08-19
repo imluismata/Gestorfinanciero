@@ -35,7 +35,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Aqui cada persona inicializa su pantalla:
-  //   inicializarMovimientos();  // Persona A
+  inicializarResumen(); // Persona A
+  inicializarMovimientos(); // Persona A
+  inicializarCategorias(); // Persona A
   inicializarMetodosPago(); // Persona B
   inicializarPrestamos(); // Persona B
 });

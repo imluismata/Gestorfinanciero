@@ -41,6 +41,22 @@ const api = {
   salud: () => pedir("/salud"),
 
   // ---- Movimientos y Categorias (Persona A) ----
+  listarMovimientos: (query = "") => pedir(`/movimientos${query}`),
+  crearMovimiento: (datos) =>
+    pedir("/movimientos", { method: "POST", body: JSON.stringify(datos) }),
+  actualizarMovimiento: (id, datos) =>
+    pedir(`/movimientos/${id}`, { method: "PUT", body: JSON.stringify(datos) }),
+  eliminarMovimiento: (id) =>
+    pedir(`/movimientos/${id}`, { method: "DELETE" }),
+  resumenMovimientos: (query = "") => pedir(`/movimientos/resumen${query}`),
+
+  listarCategorias: (query = "") => pedir(`/categorias${query}`),
+  crearCategoria: (datos) =>
+    pedir("/categorias", { method: "POST", body: JSON.stringify(datos) }),
+  actualizarCategoria: (id, datos) =>
+    pedir(`/categorias/${id}`, { method: "PUT", body: JSON.stringify(datos) }),
+  desactivarCategoria: (id) =>
+    pedir(`/categorias/${id}`, { method: "DELETE" }),
 
   // ---- Metodos de pago y Prestamos (Persona B) ----
   listarMetodosPago: (query = "") => pedir(`/metodos-pago${query}`),

@@ -1,0 +1,499 @@
+/* Estilos de las pantallas de Persona A: Movimientos, Categorias y
+   Resumen. Las primitivas compartidas (botones, campos, tarjeta, chips)
+   viven en estilos.css; aqui solo lo propio de estas pantallas. */
+
+/* ---------- Barra de filtros ---------- */
+.mov-barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--espacio-4);
+}
+.mov-filtros {
+  display: inline-flex;
+  gap: var(--espacio-2);
+}
+.mov-filtro {
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-borde);
+  background: var(--color-superficie);
+  color: var(--color-texto-suave);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.mov-filtro:hover {
+  border-color: var(--color-texto-suave);
+}
+.mov-filtro--activo,
+.mov-filtro--activo:hover {
+  background: var(--color-primario-suave);
+  border-color: transparent;
+  color: var(--color-primario-oscuro);
+}
+.mov-conteo {
+  font-size: 0.85rem;
+  color: var(--color-texto-suave);
+}
+
+/* ---------- Lista agrupada por dia ---------- */
+.mov-dia {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-texto-suave);
+  margin: var(--espacio-6) 0 var(--espacio-2);
+}
+.mov-dia:first-child {
+  margin-top: 0;
+}
+.mov-grupo {
+  padding: var(--espacio-2) var(--espacio-4);
+}
+
+.mov-fila {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: var(--espacio-4);
+  padding: var(--espacio-3) 0;
+  border-bottom: 1px solid var(--color-borde);
+}
+.mov-fila:last-child {
+  border-bottom: none;
+}
+
+.mov-fila__icono {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+.mov-fila__icono svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.mov-fila__info {
+  min-width: 0;
+}
+.mov-fila__titulo {
+  font-weight: 600;
+  font-size: 0.98rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mov-fila__sub {
+  font-size: 0.82rem;
+  color: var(--color-texto-suave);
+  margin-top: 0.1rem;
+}
+
+.mov-fila__derecha {
+  text-align: right;
+  line-height: 1.3;
+}
+.mov-fila__monto {
+  font-weight: 700;
+  font-size: 1rem;
+}
+.mov-fila__monto--ingreso {
+  color: var(--color-primario);
+}
+.mov-fila__hora {
+  font-size: 0.75rem;
+  color: var(--color-texto-suave);
+  margin-top: 0.1rem;
+}
+
+/* Acciones: discretas, aparecen al pasar el mouse por la fila. */
+.mov-fila__acciones {
+  display: flex;
+  gap: var(--espacio-1);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.mov-fila:hover .mov-fila__acciones {
+  opacity: 1;
+}
+
+.mov-cargar-mas {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--espacio-4);
+}
+
+/* ---------- Control segmentado Gasto / Ingreso ---------- */
+.seg {
+  display: inline-flex;
+  padding: 0.25rem;
+  gap: 0.25rem;
+  background: var(--color-fondo-alt);
+  border-radius: 999px;
+  margin-bottom: var(--espacio-2);
+}
+.seg-boton {
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.4rem 1.2rem;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-texto-suave);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+.seg-boton--activo {
+  background: var(--color-superficie);
+  color: var(--color-primario-oscuro);
+  box-shadow: var(--sombra-sm);
+}
+
+/* En pantallas angostas, las acciones siempre visibles (no hay hover). */
+@media (max-width: 640px) {
+  .mov-fila {
+    grid-template-columns: auto 1fr auto;
+    gap: var(--espacio-3);
+  }
+  .mov-fila__acciones {
+    opacity: 1;
+    justify-self: end;
+  }
+}
+
+/* =========================================================
+   Resumen (dashboard)
+   ========================================================= */
+.resumen-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: var(--espacio-4);
+  align-items: start;
+}
+.resumen-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-4);
+  min-width: 0;
+}
+.resumen-grid h3 {
+  margin: 0 0 var(--espacio-3);
+  font-family: var(--fuente-titulo);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+.mini-etiqueta {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-texto-suave);
+  margin-bottom: 0.1rem;
+}
+
+/* ---- Tarjeta de balance ---- */
+.card-balance {
+  padding: var(--espacio-6);
+}
+.card-balance__etiqueta {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-texto-suave);
+  font-weight: 600;
+}
+.card-balance__monto {
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0.25rem 0 var(--espacio-4);
+  letter-spacing: -0.02em;
+}
+.card-balance__monto--neg {
+  color: var(--color-error);
+}
+.card-balance__detalle {
+  display: flex;
+  gap: var(--espacio-8);
+  padding-top: var(--espacio-4);
+  border-top: 1px solid var(--color-borde);
+}
+.card-balance__ing {
+  font-weight: 700;
+  color: var(--color-primario);
+}
+.card-balance__gas {
+  font-weight: 700;
+  color: var(--color-texto);
+}
+
+/* ---- Grafico de tendencia (barras CSS) ---- */
+.card-chart {
+  padding: var(--espacio-6);
+}
+.card-chart__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-4);
+  flex-wrap: wrap;
+}
+.chart-leyenda {
+  display: flex;
+  gap: var(--espacio-4);
+}
+.chart-leyenda__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--color-texto-suave);
+}
+.punto {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  display: inline-block;
+}
+.punto--ing {
+  background: var(--color-primario);
+}
+.punto--gas {
+  background: var(--color-primario-oscuro);
+}
+
+.chart {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--espacio-4);
+  height: 200px;
+  margin-top: var(--espacio-6);
+}
+.chart-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--espacio-2);
+  height: 100%;
+}
+.chart-bars {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3px;
+  width: 100%;
+}
+/* Barras con extremos redondeados (pill), guia de diseno. */
+.chart-bar {
+  width: 40%;
+  max-width: 22px;
+  min-height: 3px;
+  border-radius: 999px 999px 0 0;
+}
+.chart-bar--ing {
+  background: var(--color-primario);
+}
+.chart-bar--gas {
+  background: var(--color-primario-oscuro);
+}
+.chart-label {
+  font-size: 0.72rem;
+  color: var(--color-texto-suave);
+  text-transform: capitalize;
+}
+
+/* ---- Tarjetas laterales (categorias + recientes) ---- */
+.card-lado {
+  padding: var(--espacio-6);
+}
+
+.cat-fila {
+  margin-bottom: var(--espacio-4);
+}
+.cat-fila:last-child {
+  margin-bottom: 0;
+}
+.cat-fila__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.35rem;
+  gap: var(--espacio-3);
+}
+.cat-fila__nombre {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.cat-fila__monto {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-texto-suave);
+}
+.cat-barra {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--color-fondo-alt);
+  overflow: hidden;
+}
+.cat-barra__relleno {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.rec-fila {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  padding: var(--espacio-2) 0;
+  border-bottom: 1px solid var(--color-borde);
+}
+.rec-fila:last-child {
+  border-bottom: none;
+}
+.rec-fila__punto {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+.rec-fila__nombre {
+  flex: 1;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rec-fila__monto {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+.rec-fila__monto--ing {
+  color: var(--color-primario);
+}
+
+@media (max-width: 900px) {
+  .resumen-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   Categorías (arbol de dos niveles)
+   ========================================================= */
+#cat-arbol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-3);
+  margin-top: var(--espacio-4);
+}
+
+.cat-cat {
+  padding: var(--espacio-4);
+}
+.cat-cat__cab {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+}
+.cat-cat__punto {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+.cat-cat__nombre {
+  font-family: var(--fuente-titulo);
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-transform: capitalize;
+}
+.cat-cat__conteo {
+  font-size: 0.78rem;
+  color: var(--color-texto-suave);
+}
+.cat-cat__acc {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-2);
+}
+
+.cat-subs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espacio-2);
+  margin-top: var(--espacio-3);
+  padding-top: var(--espacio-3);
+  border-top: 1px solid var(--color-borde);
+}
+.cat-sub {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.35rem 0.25rem 0.7rem;
+  border-radius: 999px;
+  background: var(--color-fondo-alt);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+.cat-sub__x {
+  width: 1.4rem;
+  height: 1.4rem;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-texto-suave);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.cat-sub__x svg {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+.cat-sub__x:hover {
+  background: var(--color-superficie);
+  color: var(--color-primario);
+}
+.cat-sin-subs {
+  margin: var(--espacio-3) 0 0;
+  padding-top: var(--espacio-3);
+  border-top: 1px solid var(--color-borde);
+  font-size: 0.8rem;
+  color: var(--color-texto-suave);
+  font-style: italic;
+}
+
+/* El input de color nativo, compacto y alineado con los demas campos. */
+.campo input[type="color"] {
+  height: 2.4rem;
+  padding: 0.2rem;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .cat-cat__cab {
+    flex-wrap: wrap;
+  }
+  .cat-cat__acc {
+    width: 100%;
+    margin-left: 0;
+    justify-content: flex-end;
+  }
+}
