@@ -88,17 +88,27 @@ const prestamoSchema = new mongoose.Schema(
 // virtual se computa al leer y nunca se desincroniza (ver decision
 // registrada en references/modelo-financiero.md: los saldos se
 // calculan, no se guardan).
+//
+// `this.cuotas` puede venir undefined cuando el documento se carga con
+// una proyeccion que no la incluye (por ejemplo Movimiento.populate()
+// haciendo `.populate("destino", "nombre tipo")`, donde destino puede
+// ser un Prestamo pero solo se piden esos dos campos). Sin el chequeo,
+// serializar ese documento a JSON revienta con "Cannot read properties
+// of undefined (reading 'filter')".
 prestamoSchema.virtual("cuotasPagadas").get(function () {
+  if (!this.cuotas) return undefined;
   return this.cuotas.filter((c) => c.pagada).length;
 });
 
 prestamoSchema.virtual("saldoPendiente").get(function () {
+  if (!this.cuotas) return undefined;
   return this.cuotas
     .filter((c) => !c.pagada)
     .reduce((suma, c) => suma + c.monto, 0);
 });
 
 prestamoSchema.virtual("proximaCuota").get(function () {
+  if (!this.cuotas) return undefined;
   // Las cuotas se generan en orden, asi que la primera no pagada es la
   // proxima que vence.
   return this.cuotas.find((c) => !c.pagada) || null;
