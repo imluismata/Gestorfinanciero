@@ -2,6 +2,24 @@
 // controladores garantiza que cada uno maneje distinto el caso del dia
 // 31 en febrero.
 
+// Convierte el string de un <input type="date"> ("2026-08-19") a un
+// Date en medianoche LOCAL, no UTC.
+//
+// `new Date("2026-08-19")` a secas se interpreta, por spec de
+// ECMAScript, como medianoche UTC. En un huso horario negativo (como
+// Republica Dominicana, UTC-4), esa medianoche UTC cae la noche
+// anterior en hora local. Como diaDelMes/generarCuotas leen el año,
+// mes y dia con getFullYear/getMonth/getDate -- getters en hora local,
+// no UTC -- terminaban leyendo el dia de ayer. Por eso todo dato que
+// venga de un <input type="date"> pasa por aqui antes de convertirse
+// en Date, en vez de usar `new Date(valor)` directo.
+const fechaLocalDesdeInput = (valor) => {
+  if (typeof valor === "string" && /^\d{4}-\d{2}-\d{2}$/.test(valor)) {
+    return new Date(`${valor}T00:00:00`);
+  }
+  return new Date(valor);
+};
+
 // Devuelve una fecha para el dia indicado dentro del mes dado.
 // Si el dia no existe en ese mes (31 en febrero, 31 en abril),
 // devuelve el ultimo dia del mes.
@@ -64,4 +82,10 @@ const generarCuotas = (fechaInicio, cantidadCuotas, montoCuota, diaPago) => {
   return cuotas;
 };
 
-module.exports = { diaDelMes, proximoCorte, limitePagoDeCorte, generarCuotas };
+module.exports = {
+  diaDelMes,
+  proximoCorte,
+  limitePagoDeCorte,
+  generarCuotas,
+  fechaLocalDesdeInput,
+};

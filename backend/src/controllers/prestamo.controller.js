@@ -1,6 +1,6 @@
 const Prestamo = require("../models/prestamo.model");
 const { exito, creado, error } = require("../utils/respuesta");
-const { generarCuotas } = require("../utils/fechas");
+const { generarCuotas, fechaLocalDesdeInput } = require("../utils/fechas");
 const {
   validarCuentaOrigen,
   prepararPagoCuota,
@@ -58,7 +58,7 @@ const crearPrestamo = async (req, res) => {
       moneda,
     } = req.body;
 
-    const fecha = new Date(fechaInicio);
+    const fecha = fechaLocalDesdeInput(fechaInicio);
     if (fechaInicio === undefined || Number.isNaN(fecha.getTime())) {
       return error(
         res,
@@ -147,7 +147,10 @@ const pagarCuota = async (req, res) => {
     }
 
     const numero = Number(req.params.numero);
-    const { categoria, subcategoria, fecha, descripcion } = req.body;
+    const { categoria, subcategoria, descripcion } = req.body;
+    const fecha = req.body.fecha
+      ? fechaLocalDesdeInput(req.body.fecha)
+      : Date.now();
 
     // Toda la validacion (cuota existe, no esta pagada, origen y
     // categoria vienen, el origen es un metodo de pago valido) vive en
@@ -166,7 +169,7 @@ const pagarCuota = async (req, res) => {
     const pago = await Movimiento.create({
       tipo: "cuota_prestamo",
       monto: cuota.monto,
-      fecha: fecha || Date.now(),
+      fecha,
       categoria,
       subcategoria,
       origen: metodoOrigen._id,
@@ -176,7 +179,7 @@ const pagarCuota = async (req, res) => {
     });
 
     cuota.pagada = true;
-    cuota.fechaPago = fecha || Date.now();
+    cuota.fechaPago = fecha;
     cuota.movimiento = pago._id;
 
     await prestamo.save();

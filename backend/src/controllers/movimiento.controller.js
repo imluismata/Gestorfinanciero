@@ -3,6 +3,7 @@ const Categoria = require("../models/categoria.model");
 const { exito, creado, error } = require("../utils/respuesta");
 const ErrorNegocio = require("../utils/errorNegocio");
 const { validarPagoTarjeta } = require("../services/pagoTarjeta.service");
+const { fechaLocalDesdeInput } = require("../utils/fechas");
 
 const { TIPOS_GASTO, TIPOS_INGRESO } = Movimiento;
 
@@ -234,7 +235,7 @@ const crearMovimiento = async (req, res) => {
     const datos = {
       monto,
       tipo,
-      fecha: fecha || Date.now(),
+      fecha: fecha ? fechaLocalDesdeInput(fecha) : Date.now(),
       descripcion,
       categoria,
       subcategoria,
@@ -283,7 +284,8 @@ const actualizarMovimiento = async (req, res) => {
     }
 
     if (req.body.monto !== undefined) movimiento.monto = req.body.monto;
-    if (req.body.fecha !== undefined) movimiento.fecha = req.body.fecha;
+    if (req.body.fecha !== undefined)
+      movimiento.fecha = fechaLocalDesdeInput(req.body.fecha);
     if (req.body.descripcion !== undefined)
       movimiento.descripcion = req.body.descripcion;
     if (req.body.origen !== undefined && tipo === "consumo")
@@ -334,7 +336,7 @@ const registrarPagoTarjeta = async (req, res) => {
     const pago = await Movimiento.create({
       tipo: "pago_tarjeta",
       monto,
-      fecha: fecha || Date.now(),
+      fecha: fecha ? fechaLocalDesdeInput(fecha) : Date.now(),
       origen: cuentaOrigen._id,
       destinoModelo: "MetodoPago",
       destino: tarjetaDestino._id,
